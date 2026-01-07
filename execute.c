@@ -1,12 +1,5 @@
 #include "shell.h"
 
-/**
- * execute_cmd - executes argv[0] with args, handles PATH
- * @argv: command + args
- * @prog: program name
- * @line_num: line counter
- * Return: 0 always
- */
 int execute_cmd(char **argv, char *prog, int line_num)
 {
 	pid_t pid;
@@ -16,7 +9,7 @@ int execute_cmd(char **argv, char *prog, int line_num)
 	if (!argv || !argv[0])
 		return (0);
 
-	/* Resolve command path BEFORE fork (0.3 requirement) */
+	/* Resolve BEFORE fork */
 	if (contains_slash(argv[0]))
 	{
 		if (access(argv[0], X_OK) != 0)
@@ -24,11 +17,11 @@ int execute_cmd(char **argv, char *prog, int line_num)
 			print_not_found(prog, line_num, argv[0]);
 			return (0);
 		}
-		path = argv[0]; /* points into line buffer */
+		path = argv[0];
 	}
 	else
 	{
-		path = find_in_path(argv[0]); /* malloced or NULL */
+		path = find_in_path(argv[0]);
 		if (!path)
 		{
 			print_not_found(prog, line_num, argv[0]);
@@ -36,6 +29,7 @@ int execute_cmd(char **argv, char *prog, int line_num)
 		}
 	}
 
+	/* NOW fork only if command exists */
 	pid = fork();
 	if (pid == -1)
 	{

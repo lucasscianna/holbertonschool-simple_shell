@@ -1,56 +1,66 @@
 #include "shell.h"
-#include <string.h>
 
-/**
- * find_in_path - finds full path of cmd using PATH
- * @cmd: command (ex: "ls")
- * Return: malloced full path or NULL
- */
+static int str_len(char *s)
+{
+	int i = 0;
+
+	while (s && s[i])
+		i++;
+	return (i);
+}
+
 char *find_in_path(char *cmd)
 {
-	char *path, *dir, *full;
-	int i, dirlen, cmdlen;
+	char *path, *full;
+	int i = 0, start = 0, cmdlen, dirlen, k;
 
 	if (!cmd)
 		return (NULL);
 
-	cmdlen = 0;
-	while (cmd[cmdlen])
-		cmdlen++;
+	cmdlen = str_len(cmd);
 
 	path = get_env("PATH");
 	if (!path)
 		return (NULL);
 
-	dir = strtok(path, ":");
-	while (dir)
+	while (1)
 	{
-		dirlen = 0;
-		while (dir[dirlen])
-			dirlen++;
-
-		full = malloc(dirlen + 1 + cmdlen + 1);
-		if (!full)
+		if (path[i] == ':' || path[i] == '\0')
 		{
-			free(path);
-			return (NULL);
+			dirlen = i - start;
+
+			full = malloc(dirlen + 1 + cmdlen + 1);
+			if (!full)
+			{
+				free(path);
+				return (NULL);
+			}
+
+			/* copy dir */
+			for (k = 0; k < dirlen; k++)
+				full[k] = path[start + k];
+
+			full[dirlen] = '/';
+
+			/* copy cmd */
+			for (k = 0; k < cmdlen; k++)
+				full[dirlen + 1 + k] = cmd[k];
+
+			full[dirlen + 1 + cmdlen] = '\0';
+
+			if (access(full, X_OK) == 0)
+			{
+				free(path);
+				return (full);
+			}
+			free(full);
+
+			if (path[i] == '\0')
+				break;
+
+			start = i + 1;
 		}
-
-		for (i = 0; i < dirlen; i++)
-			full[i] = dir[i];
-		full[dirlen] = '/';
-		for (i = 0; i < cmdlen; i++)
-			full[dirlen + 1 + i] = cmd[i];
-		full[dirlen + 1 + cmdlen] = '\0';
-
-		if (access(full, X_OK) == 0)
-		{
-			free(path);
-			return (full);
-		}
-
-		free(full);
-		dir = strtok(NULL, ":");
+		i++;
 	}
 
 	free(path);

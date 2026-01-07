@@ -34,5 +34,8 @@ char *get_env(char *name);
 char *find_in_path(char *cmd);
 int _strncmp(char *s1, char *s2, int n);
 int contains_slash(char *s);
+char *get_env(char *name);
+char *find_in_path(char *cmd);
+int contains_slash(char *s);
 
 #endif
