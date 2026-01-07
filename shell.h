@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <string.h>
 
 #define PROMPT "($) "
 #define DELIMS " \t\r\n"
@@ -39,4 +40,7 @@ char *find_in_path(char *cmd);
 int contains_slash(char *s);
 void print_prompt(void);
 void execute_command(char *line, char *prog_name);
+void print_prompt(void);
+int handle_builtin(char *line);
+void print_env(void);
 #endif

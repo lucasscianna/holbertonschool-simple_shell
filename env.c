@@ -1,5 +1,5 @@
 #include "shell.h"
-
+#include <string.h>
 void print_env(void)
 {
 	int i = 0;

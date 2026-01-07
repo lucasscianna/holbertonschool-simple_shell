@@ -1,5 +1,5 @@
 #include "shell.h"
-
+#include <string.h>
 int handle_builtin(char *line)
 {
 	if (strcmp(line, "exit") == 0)
