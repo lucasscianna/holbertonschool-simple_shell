@@ -1,5 +1,12 @@
 #include "shell.h"
-
+/**
+ * execute_cmd - Executes a command using fork and execve
+ * @argv: Array of arguments (first element is command)
+ * @prog: Name of the shell program (argv[0])
+ * @line_num: Line number for error messages
+ *
+ * Return: 0 always
+ */
 int execute_cmd(char **argv, char *prog, int line_num)
 {
 	pid_t pid;

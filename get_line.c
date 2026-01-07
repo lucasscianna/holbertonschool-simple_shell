@@ -1,5 +1,9 @@
 #include "shell.h"
-
+/**
+ * get_line - Reads a line from stdin
+ *
+ * Return: Pointer to malloced string with the line, or NULL on EOF/error
+ */
 char *get_line(void)
 {
 	char *buf = malloc(BUFSIZE);

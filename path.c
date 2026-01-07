@@ -1,4 +1,10 @@
 #include "shell.h"
+/**
+ * find_in_path - Finds an executable in the PATH
+ * @cmd: Command to search for
+ *
+ * Return: malloced path string if found, NULL otherwise
+ */
 char *find_in_path(char *cmd)
 {
 	char *path, *full;
