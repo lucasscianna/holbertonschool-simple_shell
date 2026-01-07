@@ -1,51 +1,34 @@
 #include "shell.h"
 
-/**
- * get_line - reads a line from stdin using read()
- * Return: allocated string, or NULL on EOF/error
- */
 char *get_line(void)
 {
-	int i = 0, size = BUFSIZE;
-	ssize_t rd;
+	char *buf = malloc(BUFSIZE);
 	char c;
-	char *buf;
+	ssize_t rd;
+	int i = 0, size = BUFSIZE;
 
-	buf = malloc(sizeof(char) * size);
 	if (!buf)
 		return (NULL);
 
-	while (1)
+	while ((rd = read(STDIN_FILENO, &c, 1)) > 0)
 	{
-		rd = read(STDIN_FILENO, &c, 1);
-		if (rd == 0)
-		{
-			free(buf);
-			return (NULL); /* EOF */
-		}
-		if (rd == -1)
-		{
-			free(buf);
-			return (NULL);
-		}
 		if (c == '\n')
 			break;
 
 		buf[i++] = c;
-
 		if (i >= size - 1)
 		{
-			char *newbuf = realloc(buf, size * 2);
+			char *tmp = realloc(buf, size * 2);
 
-			if (!newbuf)
-			{
-				free(buf);
-				return (NULL);
-			}
-			buf = newbuf;
+			if (!tmp)
+				return (free(buf), NULL);
+			buf = tmp;
 			size *= 2;
 		}
 	}
+	if (rd <= 0)
+		return (free(buf), NULL);
+
 	buf[i] = '\0';
 	return (buf);
 }
