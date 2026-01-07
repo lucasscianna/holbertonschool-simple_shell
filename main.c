@@ -37,7 +37,7 @@ int main(int ac, char **av)
 			free(line);
 			continue;
 		}
-if (argv[0] && _strcmp(argv[0], "exit") == 0)
+if (argv[0] && is_exit(argv[0]))
 {
 	free_argv(argv);
 	free(line);

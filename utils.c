@@ -48,3 +48,21 @@ int _strcmp(char *s1, char *s2)
 
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
+#include "shell.h"
+
+/**
+ * is_exit - checks if token is "exit"
+ * @s: token
+ * Return: 1 if exit, 0 otherwise
+ */
+int is_exit(char *s)
+{
+	if (!s)
+		return (0);
+
+	if (s[0] == 'e' && s[1] == 'x' && s[2] == 'i' && s[3] == 't' &&
+	    (s[4] == '\0'))
+		return (1);
+
+	return (0);
+}
