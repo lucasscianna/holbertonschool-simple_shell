@@ -1,6 +1,9 @@
 #include "shell.h"
 /**
- * print_prompt - Prints the shell prompt
+ * print_prompt - Affiche le prompt du shell
+ *
+ * Description:
+ * Affiche la chaîne définie par PROMPT sur la sortie standard.
  */
 void print_prompt(void)
 {

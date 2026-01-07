@@ -1,10 +1,14 @@
 #include "shell.h"
 /**
- * main - Entry point of the shell
- * @ac: Argument count
- * @av: Argument vector
+ * main - Point d'entrée de la shell
+ * @ac: Nombre d'arguments
+ * @av: Tableau des arguments
  *
- * Return: 0 on success
+ * Retour: 0 en cas de succès
+ *
+ * Description:
+ * Boucle principale du shell. Affiche le prompt, lit la ligne de commande,
+ * parse la ligne, exécute la commande et gère les built-ins comme 'exit'.
  */
 int main(int ac, char **av)
 {

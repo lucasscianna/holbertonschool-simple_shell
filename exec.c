@@ -1,30 +1,18 @@
 #include "shell.h"
+
 /**
- * execute_command - Executes a command by calling fork and execve
- * @argv: Array of arguments (first element is command)
- * @prog: Name of the shell program (argv[0])
- * @line_num: Line number for error reporting
+ * execute_command - Exécute une commande via fork et execve
+ * @argv: Tableau des arguments (argv[0] est la commande)
+ * @prog_name: Nom du programme shell
+ * @line: Numéro de ligne pour les erreurs
  *
- * Return: 0 always
+ * Retour: 0 toujours
+ *
+ * Description:
+ * Fonction wrapper qui appelle execute_cmd.
  */
-void execute_command(char *line, char *prog_name)
+int execute_command(char **argv, char *prog_name, int line)
 {
-	pid_t pid;
-	char *argv[2];
-	int status;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		argv[0] = line;
-		argv[1] = NULL;
-
-		execve(line, argv, environ);
-		perror(prog_name);
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		wait(&status);
-	}
+	return (execute_cmd(argv, prog_name, line));
 }
+

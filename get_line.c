@@ -1,8 +1,12 @@
 #include "shell.h"
 /**
- * get_line - Reads a line from stdin
+ * get_line - Lit une ligne depuis l'entrée standard
  *
- * Return: Pointer to malloced string with the line, or NULL on EOF/error
+ * Retour: Pointeur vers la chaîne allouée contenant la ligne,
+ *         ou NULL en cas de fin de fichier (Ctrl+D) ou erreur.
+ *
+ * Description: Utilise getline() pour
+ * récupérer la ligne tapée par l'utilisateur.
  */
 char *get_line(void)
 {
