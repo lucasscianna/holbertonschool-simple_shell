@@ -1,38 +1,22 @@
 #include "shell.h"
+
 /**
- * get_line - Reads a line from stdin
- *
- * Return: Pointer to malloced string with the line, or NULL on EOF/error
+ * get_line - read a line from stdin using getline
+ * Return: allocated line without trailing newline, or NULL on EOF
  */
 char *get_line(void)
 {
-	char *buf = malloc(BUFSIZE);
-	char c;
-	ssize_t rd;
-	int i = 0, size = BUFSIZE;
+	char *line = NULL;
+	size_t n = 0;
+	ssize_t r;
 
-	if (!buf)
-		return (NULL);
-
-	while ((rd = read(STDIN_FILENO, &c, 1)) > 0)
+	r = getline(&line, &n, stdin);
+	if (r == -1)
 	{
-		if (c == '\n')
-			break;
-
-		buf[i++] = c;
-		if (i >= size - 1)
-		{
-			char *tmp = realloc(buf, size * 2);
-
-			if (!tmp)
-				return (free(buf), NULL);
-			buf = tmp;
-			size *= 2;
-		}
+		free(line);
+		return (NULL);
 	}
-	if (rd <= 0)
-		return (free(buf), NULL);
-
-	buf[i] = '\0';
-	return (buf);
+	if (r > 0 && line[r - 1] == '\n')
+		line[r - 1] = '\0';
+	return (line);
 }
