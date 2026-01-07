@@ -6,53 +6,33 @@
  * @av: argv
  * Return: 0
  */
-int main(int ac, char **av)
+int main(int argc, char **argv)
 {
 	char *line = NULL;
-	char **argv = NULL;
-	int line_num = 0;
-	int interactive = 0;
+	size_t len = 0;
+	ssize_t read;
 
-	(void)ac;
-	interactive = isatty(STDIN_FILENO);
+	(void)argc;
 
 	while (1)
 	{
-		if (interactive)
-			write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
+		if (isatty(STDIN_FILENO))
+			print_prompt();
 
-		line = get_line();
-		if (line == NULL)
-		{
-			if (interactive)
-				write(STDOUT_FILENO, "\n", 1);
-			exit(0);
-		}
+		read = getline(&line, &len, stdin);
+		if (read == -1)
+			break;
 
-		line_num++;
+		if (line[read - 1] == '\n')
+			line[read - 1] = '\0';
 
-		argv = parse_line(line);
-		if (argv == NULL)
-		{
-			free(line);
+		if (*line == '\0')
 			continue;
-		}
-if (argv[0] && is_exit(argv[0]))
-{
-	int status = 0;
+		if (handle_builtin(line))
+			continue;
 
-	if (argv[1])
-		status = _atoi(argv[1]);
-
-	free_argv(argv);
+		execute_command(line, argv[0]);
+	}
 	free(line);
-	exit(status);
-}
-
-execute_cmd(argv, av[0], line_num);
-
-free_argv(argv);
-free(line);
-}
-return (0);
+	return (0);
 }
