@@ -1,16 +1,10 @@
 #include "shell.h"
-/**
- * main - Entry point of the shell
- * @ac: Argument count
- * @av: Argument vector
- *
- * Return: 0 on success
- */
+
 int main(int ac, char **av)
 {
 	char *line;
 	char **argv;
-	int n = 0, interactive = isatty(STDIN_FILENO);
+	int n = 0, interactive = isatty(STDIN_FILENO), code;
 
 	(void)ac;
 	while (1)
@@ -31,13 +25,16 @@ int main(int ac, char **av)
 		}
 
 		if (argv[0] && _strcmp(argv[0], "exit") == 0)
-			return (free_argv(argv), free(line),
-				argv[1] ? _atoi(argv[1]) : 0);
+		{
+			code = (argv[1] ? _atoi(argv[1]) : 0);
+			free_argv(argv);
+			free(line);
+			return (code);
+		}
 
 		execute_cmd(argv, av[0], n);
 		free_argv(argv);
 		free(line);
 	}
 }
-
 
