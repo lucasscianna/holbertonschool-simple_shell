@@ -39,9 +39,14 @@ int main(int ac, char **av)
 		}
 if (argv[0] && is_exit(argv[0]))
 {
+	int status = 0;
+
+	if (argv[1])
+		status = _atoi(argv[1]);
+
 	free_argv(argv);
 	free(line);
-	exit(0);
+	exit(status);
 }
 
 execute_cmd(argv, av[0], line_num);
