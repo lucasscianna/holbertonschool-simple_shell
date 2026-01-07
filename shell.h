@@ -37,5 +37,6 @@ int contains_slash(char *s);
 char *get_env(char *name);
 char *find_in_path(char *cmd);
 int contains_slash(char *s);
-
+void print_prompt(void);
+void execute_command(char *line, char *prog_name);
 #endif
