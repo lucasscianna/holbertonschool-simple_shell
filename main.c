@@ -1,38 +1,59 @@
 #include "shell.h"
 
 /**
- * main - entry point
- * @ac: argc
- * @av: argv
- * Return: 0
+ * main - entry point of the simple shell
+ * @ac: argument count
+ * @av: argument vector
+ *
+ * Return: 0 on success
  */
-int main(int argc, char **argv)
+int main(int ac, char **av)
 {
 	char *line = NULL;
-	size_t len = 0;
-	ssize_t read;
+	char **argv = NULL;
+	int line_num = 0;
+	int interactive = 0;
 
-	(void)argc;
+	(void)ac;
+	interactive = isatty(STDIN_FILENO);
 
 	while (1)
 	{
-		if (isatty(STDIN_FILENO))
-			print_prompt();
+		if (interactive)
+			write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
 
-		read = getline(&line, &len, stdin);
-		if (read == -1)
-			break;
+		line = get_line();
+		if (line == NULL) 
+		{
+			if (interactive)
+				write(STDOUT_FILENO, "\n", 1);
+			exit(0);
+		}
 
-		if (line[read - 1] == '\n')
-			line[read - 1] = '\0';
+		line_num++;
 
-		if (*line == '\0')
+		argv = parse_line(line);
+		if (argv == NULL)
+		{
+			free(line);
 			continue;
-		if (handle_builtin(line))
-			continue;
+		}
 
-		execute_command(line, argv[0]);
+
+		if (argv[0] && _strcmp(argv[0], "exit") == 0)
+		{
+			free_argv(argv);
+			free(line);
+			exit(0);
+		}
+
+
+		execute_cmd(argv, av[0], line_num);
+
+		free_argv(argv);
+		free(line);
 	}
-	free(line);
+
 	return (0);
 }
+
