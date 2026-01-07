@@ -89,3 +89,80 @@ int _atoi(char *s)
 	}
 	return (res * sign);
 }
+#include "shell.h"
+
+/**
+ * _strncmp - compare n chars
+ */
+int _strncmp(char *s1, char *s2, int n)
+{
+	int i = 0;
+
+	for (i = 0; i < n; i++)
+	{
+		if (s1[i] != s2[i] || s1[i] == '\0' || s2[i] == '\0')
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	}
+	return (0);
+}
+
+/**
+ * contains_slash - checks if string contains '/'
+ * @s: string
+ * Return: 1 if contains '/', else 0
+ */
+int contains_slash(char *s)
+{
+	int i = 0;
+
+	if (!s)
+		return (0);
+
+	while (s[i])
+	{
+		if (s[i] == '/')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+/**
+ * get_env - get env var value (malloced copy)
+ * @name: var name (ex: "PATH")
+ * Return: malloced string or NULL
+ */
+char *get_env(char *name)
+{
+	int i = 0, j, namelen = 0;
+	char *env, *val, *copy;
+
+	if (!name)
+		return (NULL);
+
+	while (name[namelen])
+		namelen++;
+
+	while (environ[i])
+	{
+		env = environ[i];
+		if (_strncmp(env, name, namelen) == 0 && env[namelen] == '=')
+		{
+			val = env + namelen + 1;
+			j = 0;
+			while (val[j])
+				j++;
+
+			copy = malloc(j + 1);
+			if (!copy)
+				return (NULL);
+
+			for (j = 0; val[j]; j++)
+				copy[j] = val[j];
+			copy[j] = '\0';
+			return (copy);
+		}
+		i++;
+	}
+	return (NULL);
+}
