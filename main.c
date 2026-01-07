@@ -39,9 +39,9 @@ int main(int ac, char **av)
 		}
 if (argv[0] && _strcmp(argv[0], "exit") == 0)
 {
-free_argv(argv);
-free(line);
-exit(0);
+	free_argv(argv);
+	free(line);
+	exit(0);
 }
 
 execute_cmd(argv, av[0], line_num);
