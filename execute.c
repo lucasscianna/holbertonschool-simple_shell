@@ -1,13 +1,10 @@
 #include "shell.h"
 
 /**
- * get_command_path - Cherche le chemin complet d'une commande
- * @cmd: Nom de la commande (argv[0])
+ * get_command_path - get full path of a command
+ * @cmd: command name (argv[0])
  *
- * Return: Chemin complet de l'exécutable si trouvé, NULL sinon
- *
- * Description:
- * Vérifie si la commande contient un '/', sinon recherche dans PATH.
+ * Return: full path if found, NULL otherwise
  */
 static char *get_command_path(char *cmd)
 {
@@ -19,40 +16,33 @@ static char *get_command_path(char *cmd)
 			return (NULL);
 		return (cmd);
 	}
-
 	path = find_in_path(cmd);
 	return (path);
 }
 
 /**
- * run_command - Fork et exécute une commande
- * @argv: Tableau des arguments de la commande (argv[0] est la commande)
- * @prog: Nom du programme shell (argv[0])
- * @line_num: Numéro de ligne pour les messages d'erreur
+ * run_command - fork and execute a command
+ * @argv: arguments array
+ * @prog: shell program name
+ * @line_num: command counter for error messages
  *
- * Description:
- * Utilise fork pour créer un processus fils et
- * execve pour exécuter la commande.
- * Affiche un message d'erreur si la commande n'est pas trouvée.
+ * Return: exit status of the command
  */
-static void run_command(char **argv, char *prog, int line_num)
+static int run_command(char **argv, char *prog, int line_num)
 {
 	pid_t pid;
 	int status;
 	char *path = get_command_path(argv[0]);
 
 	if (!path)
-	{
-		print_not_found(prog, line_num, argv[0]);
-		return;
-	}
+		return (print_not_found(prog, line_num, argv[0]), 127);
 
 	pid = fork();
 	if (pid == -1)
 	{
 		if (!contains_slash(argv[0]))
 			free(path);
-		return;
+		return (1);
 	}
 
 	if (pid == 0)
@@ -63,24 +53,23 @@ static void run_command(char **argv, char *prog, int line_num)
 	}
 
 	wait(&status);
-
 	if (!contains_slash(argv[0]))
 		free(path);
+
+	return (WIFEXITED(status) ? WEXITSTATUS(status) : 1);
 }
 
 /**
- * execute_cmd - Exécute une commande via fork/execve
- * @argv: Tableau des arguments (argv[0] est la commande)
- * @prog: Nom du programme shell
- * @line_num: Numéro de ligne pour les messages d'erreur
+ * execute_cmd - execute a command
+ * @argv: arguments array
+ * @prog: shell program name
+ * @line_num: command counter
  *
- * Return: Toujours 0
- *
- * Description:
- * Wrapper autour de run_command pour exécuter une commande.
+ * Return: exit status of the command
  */
 int execute_cmd(char **argv, char *prog, int line_num)
 {
-	run_command(argv, prog, line_num);
-	return (0);
+	if (!argv || !argv[0])
+		return (0);
+	return (run_command(argv, prog, line_num));
 }

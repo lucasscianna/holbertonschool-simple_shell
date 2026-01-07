@@ -6,12 +6,12 @@
  *
  * Return: exit status
  */
-
 int main(int ac, char **av)
 {
 	char *line;
 	char **argv;
 	int n = 0, interactive = isatty(STDIN_FILENO);
+	int last_status = 0, code;
 
 	(void)ac;
 	while (1)
@@ -21,7 +21,7 @@ int main(int ac, char **av)
 
 		line = get_line();
 		if (!line)
-			return (interactive ? (write(1, "\n", 1), 0) : 0);
+			return (interactive ? (write(1, "\n", 1), last_status) : last_status);
 
 		n++;
 		argv = parse_line(line);
@@ -32,13 +32,15 @@ int main(int ac, char **av)
 		}
 
 		if (argv[0] && _strcmp(argv[0], "exit") == 0)
-			return (free_argv(argv), free(line),
-				argv[1] ? _atoi(argv[1]) : 0);
+		{
+			code = (argv[1] ? _atoi(argv[1]) : last_status);
+			free_argv(argv);
+			free(line);
+			return (code);
+		}
 
-		execute_cmd(argv, av[0], n);
+		last_status = execute_cmd(argv, av[0], n);
 		free_argv(argv);
 		free(line);
 	}
 }
-
-
