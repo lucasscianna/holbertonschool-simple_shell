@@ -64,3 +64,19 @@ char *get_env(char *name)
 	}
 	return (NULL);
 }
+#include "shell.h"
+
+/**
+ * print_int - print integer to stderr
+ * @n: number
+ */
+void print_int(int n)
+{
+	char c;
+
+	if (n / 10)
+		print_int(n / 10);
+
+	c = (n % 10) + '0';
+	write(STDERR_FILENO, &c, 1);
+}
