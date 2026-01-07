@@ -20,6 +20,11 @@ har *find_in_path(char *cmd)
 		clen++;
 
 	path = get_env("PATH");
+	if (!path || path[0] == '\0')
+{
+	free(path);
+	return (NULL);
+}
 	if (!path)
 		return (NULL);
 	while (1)
