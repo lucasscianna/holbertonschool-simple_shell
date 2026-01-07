@@ -90,4 +90,4 @@ Dans l'exemple ci-dessus :
 ## Auteurs
 
 Projet réalisé dans le cadre du cursus Holberton School.
-**Lucas & Rayan**
+**Lucas & Ryan**
