@@ -37,11 +37,17 @@ int main(int ac, char **av)
 			free(line);
 			continue;
 		}
+if (argv[0] && _strcmp(argv[0], "exit") == 0)
+{
+free_argv(argv);
+free(line);
+exit(0);
+}
 
-		execute_cmd(argv, av[0], line_num);
+execute_cmd(argv, av[0], line_num);
 
-		free_argv(argv);
-		free(line);
-	}
-	return (0);
+free_argv(argv);
+free(line);
+}
+return (0);
 }

@@ -26,4 +26,6 @@ void print_not_found(char *prog, int line_num, char *cmd);
 int _strlen(char *s);
 void print_int(int n);
 
+int _strcmp(char *s1, char *s2);
+
 #endif
