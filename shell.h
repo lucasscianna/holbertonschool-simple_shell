@@ -28,5 +28,6 @@ void print_int(int n);
 
 int _strcmp(char *s1, char *s2);
 int is_exit(char *s);
+int _atoi(char *s);
 
 #endif

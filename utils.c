@@ -66,3 +66,26 @@ int is_exit(char *s)
 
 	return (0);
 }
+#include "shell.h"
+
+int _atoi(char *s)
+{
+	int i = 0, sign = 1, res = 0;
+
+	if (!s)
+		return (0);
+
+	if (s[0] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+
+	for (; s[i]; i++)
+	{
+		if (s[i] < '0' || s[i] > '9')
+			break;
+		res = res * 10 + (s[i] - '0');
+	}
+	return (res * sign);
+}
