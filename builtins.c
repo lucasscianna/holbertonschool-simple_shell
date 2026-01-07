@@ -1,16 +1,12 @@
 #include "shell.h"
 #include <string.h>
 /**
- * handle_builtin - Gère les commandes internes (built-ins)
- * @argv: Tableau des arguments de la commande
- * @line: Numéro de la ligne pour les messages d'erreur
+ * handle_builtin - handle built-in commands
+ * @line: input line
  *
- * Retour: 1 si une commande interne a été exécutée, 0 sinon
- *
- * Description:
- * Vérifie si la commande tapée est un built-in ('exit' ou 'env').
- * Si oui, l'exécute directement sans fork.
+ * Return: 1 if builtin handled, 0 otherwise
  */
+
 int handle_builtin(char *line)
 {
 	if (strcmp(line, "exit") == 0)

@@ -1,15 +1,12 @@
 #include "shell.h"
 /**
- * find_in_path - Cherche un exécutable dans le PATH
- * @cmd: Nom de la commande à trouver
+ * find_in_path - search command in PATH
+ * @cmd: command name
  *
- * Retour: Chemin mallocé vers l'exécutable si trouvé, NULL sinon
- *
- * Description:
- * Parcourt les répertoires listés dans la variable d'environnement PATH
- * pour trouver la commande. Retourne le chemin complet si elle existe.
+ * Return: allocated full path, or NULL if not found
  */
-har *find_in_path(char *cmd)
+
+char *find_in_path(char *cmd)
 {
 	char *path, *full;
 	int i = 0, start = 0, dlen, clen = 0, k;
