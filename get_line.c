@@ -1,9 +1,10 @@
 #include "shell.h"
-
 /**
- * get_line - read a line from stdin using getline
- * Return: allocated line without trailing newline, or NULL on EOF
+ * get_line - reads one line from standard input
+ *
+ * Return: pointer to allocated string, or NULL on EOF/error
  */
+
 char *get_line(void)
 {
 	char *line = NULL;

@@ -1,9 +1,9 @@
 #include "shell.h"
 #include <string.h>
 /**
- * print_env - Prints the current environment variables
+ * print_env2 - Prints the current environment variables
  */
-void print_env(void)
+void print_env2(void)
 {
 	int i = 0;
 
