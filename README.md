@@ -1,4 +1,4 @@
-# Shell Simple
+# Simple Shell
 
 ## Description
 
@@ -46,6 +46,12 @@ $ ./hsh
 /home/utilisateur/shell_demo
 #cisfun$ /bin/ls -l
 ```
+**Commande utilisable**
+
+($) ls -l
+($) pwd
+($) env
+($) exit 0
 
 **Remarque :** Si vous tapez une commande sans chemin absolu (comme `ls`), le shell essaiera d'exécuter un fichier du répertoire courant. Comme la recherche dans le PATH n'est pas encore implémentée, cela échouera souvent.
 
